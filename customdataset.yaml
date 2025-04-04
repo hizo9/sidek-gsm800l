@@ -1,0 +1,4 @@
+train: C:\Users\evand\Downloads\sidek\sidek4\train
+val: C:\Users\evand\Downloads\sidek\sidek4\val
+
+names: ['trash']

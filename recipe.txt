@@ -1,0 +1,14 @@
+# command prompts
+yolo detect train data=customdataset.yaml model=yolo11n.pt epochs=100 imgsz=640
+yolo export model=best.pt format=ncnn
+
+# requirements
+ultralytics
+ncnn
+sim800l-gsm-module
+
+# gsm800l notes
+communication via /dev/serial0
+1 - sudo raspi-config
+2 - Interfaces / Serial
+3 - No to the 1st and Yes for the 2nd
