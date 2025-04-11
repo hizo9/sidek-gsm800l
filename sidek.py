@@ -12,6 +12,7 @@ GRID_DETECTION_THRESHOLD = 6
 CONFIDENCE_THRESHOLD = 0.1
 OPTIMIZE = True
 
+SERIALPORT = "/dev/serial0"
 TARGETCAMERA = 0
 TARGETNUMBER = "62xxxxxxxxxxx"
 
@@ -22,7 +23,7 @@ show_class_names = True
 
 # Codes
 def send_sms(phone_number, message):
-    ser = serial.Serial('/dev/serial0', 9600, timeout=1)
+    ser = serial.Serial(SERIALPORT, 9600, timeout=1)
     time.sleep(1)
 
     ser.write(b'AT+CMGF=1\r')
