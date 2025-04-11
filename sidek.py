@@ -2,7 +2,7 @@
 import cv2
 import time
 from ultralytics import YOLO
-from sim800l import SIM800L
+import serial
 
 # Configs
 title = "@evandanendraa - sidek v4 (press q to quit)"
@@ -18,10 +18,31 @@ TARGETNUMBER = "62xxxxxxxxxxx"
 fps = 0
 frame_count = 0
 start_time = time.time()
-sim800l = SIM800L('/dev/serial0')
 show_class_names = True
 
 # Codes
+def send_sms(phone_number, message):
+    ser = serial.Serial('/dev/serial0', 9600, timeout=1)
+    time.sleep(1)
+
+    ser.write(b'AT+CMGF=1\r')
+    time.sleep(1)
+    response = ser.read(ser.inWaiting()).decode()
+    print("Response:", response)
+
+    ser.write(f'AT+CMGS="{phone_number}"\r'.encode())
+    time.sleep(1)
+    response = ser.read(ser.inWaiting()).decode()
+    print("Response:", response)
+
+    ser.write(f'{message}\x1A'.encode())  # \x1A is Ctrl+Z character
+    time.sleep(3)  # Wait for the message to be sent
+    response = ser.read(ser.inWaiting()).decode()
+    print("Response:", response)
+
+    # Close the serial connection
+    ser.close()
+
 cap = cv2.VideoCapture(TARGETCAMERA)
 notification_sent = False
 
@@ -79,8 +100,8 @@ while True:
             y_center = height // 2
             cv2.putText(frame, text, (x_center, y_center), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
-            sms = f"[!] LIMIT {len(detected_grids)}/9 | TARGET = {GRID_DETECTION_THRESHOLD}"
-            sim800l.send_sms(TARGETNUMBER, sms)
+            message = f"[!] LIMIT {len(detected_grids)}/9 | TARGET = {GRID_DETECTION_THRESHOLD}"
+            send_sms(TARGETNUMBER, message)
             notification_sent = True
     else:
         notification_sent = False
