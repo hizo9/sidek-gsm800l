@@ -23,5 +23,5 @@
 
 ###
 
-## SIDEK + GSM800l Module
+## SIDEK V2 + GSM800l Module
 Sensor-Based Intelligent Detector for Waste Material in Ricefield Irrigation (Subak)
